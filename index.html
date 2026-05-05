@@ -13,25 +13,26 @@
 
 <h2>Presensi Online</h2>
 
-<input type="text" id="nama" placeholder="Masukkan Nama">
+<input type="text" id="nip" placeholder="Masukkan NIP">
+<input type="text" id="kegiatan" placeholder="" value="Kirab Budaya" readonly>
 <br>
 
-<button onclick="startPresensi()">Ambil Lokasi & Foto</button>
+<button onclick="startPresensi()">Ambil Foto & Lokasi</button>
 
 <video id="video" autoplay playsinline></video>
 <canvas id="canvas" style="display:none;"></canvas>
 
 <script>
 // 🔴 GANTI DENGAN URL APPS SCRIPT ANDA
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbwId8_wDdjKj2D6y_yv7oqWHswlSY0Ukjf8wow3p_QN6GW11lunVCQnCCzGjeOwfQQJog/exec";
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbxTiZ-bEUtIeFQEUC7wZdOMuNyR5weoj9FaNrcvVBozl5nLaqjP7DRF3sk-5TFyO02r_w/exec";
 
 let lat = null;
 let lng = null;
 
 async function startPresensi() {
-  const nama = document.getElementById("nama").value;
-  if (!nama) {
-    alert("Nama wajib diisi");
+  const nip = document.getElementById("nip").value;
+  if (!nip) {
+    alert("NIP wajib diisi");
     return;
   }
 
@@ -83,12 +84,14 @@ function capture(stream) {
 }
 
 function kirimData(foto) {
-  const nama = document.getElementById("nama").value;
+  const nip = document.getElementById("nip").value;
+  const kegiatan = document.getElementById("kegiatan").value;
 
   fetch(ENDPOINT, {
     method: "POST",
     body: JSON.stringify({
-      nama: nama,
+      nip: nip,
+      kegiatan: kegiatan,
       lat: lat,
       lng: lng,
       foto: foto
@@ -97,14 +100,11 @@ function kirimData(foto) {
   .then(res => res.json())
   .then(res => {
     if (res.status === "success") {
-      alert("Presensi berhasil!");
+      alert("Presensi berhasil\nNama: " + res.nama);
       location.reload();
     } else {
-      alert("Gagal: " + res.message);
+      alert("Error: " + res.message);
     }
-  })
-  .catch(err => {
-    alert("Kirim gagal: " + err.message);
   });
 }
 </script>
