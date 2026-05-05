@@ -2,29 +2,46 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <title>Presensi Online</title>
   <style>
-    body { font-family: Arial; text-align: center; padding: 20px; }
-    input, button { padding: 12px; margin: 10px; width: 90%; max-width: 320px; }
     video { width: 100%; max-width: 320px; border-radius: 12px; margin-top: 10px; }
   </style>
 </head>
 <body>
+  <div class="container-fluid">
+    <p style="line-height:2;"/>
 
-<h2>Presensi Online</h2>
+    <div class="d-flex justify-content-center align-items-center">
+      <h3>Presensi Online</h3>
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+      <h5>BAPPERIDA Kabupaten Cianjur</h5>
+    </div>
 
-<input type="text" id="nip" placeholder="Masukkan NIP">
-<input type="text" id="kegiatan" placeholder="" value="Kirab Budaya" readonly>
-<br>
-
-<button onclick="startPresensi()">Ambil Foto & Lokasi</button>
-
-<video id="video" autoplay playsinline></video>
-<canvas id="canvas" style="display:none;"></canvas>
+    <div class="form-group">
+      <label for="nip" class="form-label">NIP</label>
+      <input type="text" class="form-control" id="nip" name="nip" placeholder="Silakan masukkan NIP Anda!">
+    </div>
+    <div class="form-group">
+      <label for="kegiatan" class="form-label">Kegiatan</label>
+      <input type="text" class="form-control" id="kegiatan" name="kegiatan" value="Kirab Budaya Tahun 2026" readonly>
+    </div>
+    <div class="form-group">
+      <input class="btn btn-primary w-100" type="button" value="Ambil Foto dan Lokasi" onclick="startPresensi()">
+    </div>
+    <div class="form-group">
+      <input class="btn btn-success w-100" type="button" value="Lihat Daftar Kehadiran" onclick="window.open('https://docs.google.com/spreadsheets/d/1FS9AJnrwQvb66S7_HyPUy7gW4j3HT0yqvnKWEx8_ai0/edit?usp=sharing')">
+    </div>
+    <div class="text-center">
+      <video id="video" autoplay playsinline></video>
+      <canvas id="canvas" style="display:none;"></canvas>
+    </div>
+  </div>
 
 <script>
 // 🔴 GANTI DENGAN URL APPS SCRIPT ANDA
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbxTiZ-bEUtIeFQEUC7wZdOMuNyR5weoj9FaNrcvVBozl5nLaqjP7DRF3sk-5TFyO02r_w/exec";
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbwG6Cl--EcGjjEdY5MDcZmJ2RpkKFVzlnWXTKXxoT_rr4_-_zgjgT6IAr2d4919wBwe5A/exec";
 
 let lat = null;
 let lng = null;
@@ -32,7 +49,7 @@ let lng = null;
 async function startPresensi() {
   const nip = document.getElementById("nip").value;
   if (!nip) {
-    alert("NIP wajib diisi");
+    alert("NIP harus diisi!");
     return;
   }
 
@@ -100,14 +117,14 @@ function kirimData(foto) {
   .then(res => res.json())
   .then(res => {
     if (res.status === "success") {
-      alert("Presensi berhasil\nNama: " + res.nama);
+      alert("Presensi berhasil...\nNama: " + res.nama);
       location.reload();
     } else {
       alert("Error: " + res.message);
+      location.reload();
     }
   });
 }
 </script>
-
 </body>
 </html>
